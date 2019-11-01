@@ -1,0 +1,67 @@
+html, body{
+    height: 100%;
+    margin: 0;
+}
+
+#game{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 
+
+#game{
+border: 1px solid #000000;
+margin-top: 10px;
+margin-left: 500px;
+}
+
+#scorePrint{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 
+
+#scorePrint{
+    float: left;
+    margin: 10px 600px;
+    height: 100px;
+    width: 200px;
+    color: blue;
+     /* border: 1px solid red;  */
+     font-family: Arial, Helvetica, sans-serif; 
+      font-size: 20px;
+     font-weight: bold;
+}
+
+#btnToPause{
+    background-color: #f44336;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-left: 610px;
+  margin-top: 40px;
+  float: left;
+  display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#btnToRenew{
+    background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-left: 700px;
+  margin-top: 40px;
+  display: flex;
+    justify-content: center;
+    align-items: center;
+}
