@@ -1,12 +1,13 @@
 var canvas = document.getElementById('game');
 var context = canvas.getContext('2d');
 var grid = 16;
-var count = 0;
-// var lastMove = 'right';
-// var score = 0;
 var coArray = [];
 var isPaused = true;
-//var scorePrint = document.getElementById('scorePrint');
+
+var btnToPause = document.getElementById('btnToPause');
+var btnToRenew = document.getElementById('btnToRenew');
+var count=0;
+var paused = false;
 
 
 function createCoOrdinateArray()
@@ -22,28 +23,12 @@ function createCoOrdinateArray()
 }
 createCoOrdinateArray();
 
-
 var lsArray = localStorage.getItem('coordinate');
 var lsarr = JSON.parse(lsArray);
 
-// var snake = 
-// {
-//     x : 160,
-//     y: 160,
-//     cells: [{x:160, y:160},{x:144, y:160}],
-//     die: false,
-//     eatApple: false,
-// };
-
-// var apple = 
-// {
-//     x: 320,
-//     y: 320
-// };
 
 var lastMove = lsarr[lsarr.length-1].lastMoves;
 
-//var score = 0;
 var score = lsarr[lsarr.length-1].scores;
 document.getElementById("scorePrint").innerHTML = "Score = " +  score;
 
@@ -143,7 +128,7 @@ function checkEatApple()
         snake.eatApple = true;
         generateApple();
         drawApple();
-        countScore();
+        var s = countScore();
     }
 }
 
@@ -151,6 +136,7 @@ function countScore()
 {
     score = score + 10;
     document.getElementById("scorePrint").innerHTML = "Score = " +  score;
+    return score;
 }
 
 function gameOver()
@@ -165,56 +151,6 @@ function gameOver()
     coArray = [];
 }
 
-// document.addEventListener('keydown', function(e){
-//     let dx = 0, dy = 0;
-//     if(e.keyCode == 37 && lastMove != 'right')
-//     {
-//         dx = -grid;
-//         dy = 0;
-//         lastMove = 'left';
-//     }
-//     else if(e.keyCode == 38 && lastMove != 'down')
-//     {
-//         dy = -grid;
-//         dx = 0;
-//         lastMove = 'up';
-//     }
-//     else if(e.keyCode == 39 && lastMove != 'left')
-//     {
-//         dx = grid;
-//         dy = 0;
-//         lastMove = 'right';
-//     }
-//     else if(e.keyCode == 40 && lastMove != 'up')
-//     {
-//         dy = grid;
-//         dx = 0;
-//         lastMove = 'down';
-//     }
-//     else
-//     {
-//         return;
-//     }
-//     context.clearRect(0, 0, canvas.width, canvas.height);
-//     moveSnake(dx, dy);
-//     checkBoundary();
-//     checkSnakeBiteItself();
-//     checkEatApple();
-//     if(snake.die)
-//     {
-//         gameOver();
-//         return;
-//     }
-//     drawSnake();
-//     drawApple();
-// });
-
-
-
-var btnToPause = document.getElementById('btnToPause');
-var btnToRenew = document.getElementById('btnToRenew');
-var count=0;
-var paused = false;
 
 
 function move(i)
@@ -228,9 +164,8 @@ function move(i)
         lastMove = 'left';
         }
          else if(lastMove == 'right'){
-        //     dx += grid;
-        // dy = 0;
-        pauseGame();
+            dx += grid;
+        dy = 0;
          }
         break;
     }
@@ -242,9 +177,8 @@ function move(i)
         lastMove = 'up';
         }
          else if(lastMove == 'down'){
-        //     dy += grid;
-        // dx = 0;
-        pauseGame();
+            dy += grid;
+        dx = 0;
          }
         break;
     }
@@ -256,9 +190,8 @@ function move(i)
         lastMove = 'right';
         }
          else if(lastMove == 'left'){
-        //     dx -= grid;
-        // dy = 0;
-        pauseGame();
+            dx -= grid;
+        dy = 0;
          }
         break;
     }
@@ -270,9 +203,8 @@ function move(i)
         lastMove = 'down';
         }
          else if(lastMove == 'up'){
-        //     dy -= grid;
-        // dx = 0;
-        pauseGame();
+            dy -= grid;
+        dx = 0;
          }
         break;
     }
@@ -318,10 +250,6 @@ document.addEventListener('keydown', function(event){
     {
         i=4
     }
- /*   else
-    {
-        i=0;
-    }*/
 
     interval = setInterval(function(){
         move(i);
@@ -340,7 +268,6 @@ btnToPause.addEventListener('click', function(){
             coArray = [];
             document.getElementById("btnToPause").innerHTML = "Play";
             document.getElementById("btnToPause").style.backgroundColor = "#008CBA";
-            pauseGame();
         
             addCoOrdinateToLS();
         }
@@ -348,8 +275,7 @@ btnToPause.addEventListener('click', function(){
         {
             document.getElementById("btnToPause").innerHTML = "Pause";
             document.getElementById("btnToPause").style.backgroundColor = "#f44336";
-            // localStorage.removeItem("coordinate");
-            // coArray = [];
+     
            interval = setInterval(function(){
             move(i);
         },200);
@@ -362,75 +288,36 @@ btnToRenew.addEventListener('click', function(){
     localStorage.removeItem("coordinate");
 });
 
-/*
+
 document.addEventListener('keydown', function(e){
     if(e.keyCode == 32) 
     {
         count++;
-        
+        console.log(count);
         if(snake.x>=0 && snake.x<=400 && snake.y>=0 && snake.y<=400)
     {
-        if(count%2==1)
+        if(count%2==1 && paused==false)
         {
-            pauseGame(interval);
-
-        addCoOrdinateToLS();
-        }
-        else if(count%2==0 && count>0)
-        {
-            interval = setInterval(function(){
-                move(i);
-            },200);
-        }
-    }
-    }
-});
-*/
-
-document.addEventListener('keydown', function(e){
-    if(snake.x>=0 && snake.x<=400 && snake.y>=0 && snake.y<=400)
-        {
-    if(e.keyCode == 32)
-    {
-        localStorage.removeItem("coordinate");
+            localStorage.removeItem("coordinate");
             coArray = [];
-        pauseGame();
-        addCoOrdinateToLS();
+            pauseGame();
+            addCoOrdinateToLS();
+        }
+        else if(count%2==0 && paused==true)
+        {
+            move(i);
+        }
     }
-    else if(e.keyCode == 13)
-    {
-        // localStorage.removeItem("coordinate");
-        //     coArray = [];
-        move(i);
     }
-}
 });
-
 
 function pauseGame()
 {
-   // clearTimeout(interval);
    clearInterval(interval);
 }
 
 }
 main();
-
-
-
-
-
-
-// function addCoOrdinateToLS()
-// {
-//     var coObject = new Object();
-
-//     coObject.x_coord = snake.x;
-//     coObject.y_coord = snake.y;
-
-//     coArray.push(coObject);
-//     localStorage.coordinate = JSON.stringify(coArray);
-// }
 
 function addCoOrdinateToLS()
 {
